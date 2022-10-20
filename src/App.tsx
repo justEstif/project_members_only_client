@@ -1,5 +1,3 @@
-// NOTE the name of the website is Hermóðr
-// Create layout of the page
 import tw from "tailwind-styled-components";
 import RegisterForm from "./RegisterForm";
 
@@ -29,11 +27,7 @@ const App = () => {
   return (
     <SPageLayout>
       <Dashboard />
-
-      <div className="font-heading">
-        <h1 className="text-3xl">Create an account</h1>
-        <RegisterForm />
-      </div>
+      <RegisterForm />
     </SPageLayout>
   );
 };
