@@ -57,3 +57,7 @@ const App = () => {
 ```
 
 1. Make the Dashboard
+
+- Focus on functionality first
+  - make sure you can register a user
+

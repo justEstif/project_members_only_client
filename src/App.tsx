@@ -1,6 +1,7 @@
 // NOTE the name of the website is Hermóðr
 // Create layout of the page
 import tw from "tailwind-styled-components";
+import RegisterForm from "./RegisterForm";
 
 const SPageLayout = tw.main`
   max-w-2xl
@@ -11,11 +12,10 @@ const SPageLayout = tw.main`
 
 const Dashboard = () => {
   return (
-    <div className="flex flex-col gap-5 items-center">
-      {/* TODO: use greek like fonts */}
+    <div className="flex flex-col gap-5 items-center font-dashboard">
       <h1 className="text-4xl md:text-6xl">Talaria</h1>
       <nav>
-        <ul className="flex gap-8">
+        <ul className="flex gap-8 text-2xl">
           <li>Home</li>
           <li>Login</li>
           <li>Register</li>
@@ -29,7 +29,11 @@ const App = () => {
   return (
     <SPageLayout>
       <Dashboard />
-      <h1>Create an account</h1>
+
+      <div className="font-heading">
+        <h1 className="text-3xl">Create an account</h1>
+        <RegisterForm />
+      </div>
     </SPageLayout>
   );
 };
