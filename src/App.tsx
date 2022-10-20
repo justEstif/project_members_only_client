@@ -10,7 +10,7 @@ const SPageLayout = tw.main`
 
 const Dashboard = () => {
   return (
-    <div className="flex flex-col gap-5 items-center font-dashboard">
+    <div className="flex flex-col gap-5 justify-center items-center font-dashboard">
       <h1 className="text-4xl md:text-6xl">Talaria</h1>
       <nav>
         <ul className="flex gap-8 text-2xl">
