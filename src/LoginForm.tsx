@@ -12,8 +12,21 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const onSubmit = (values: FieldValues) => {
-    console.log(values);
+  const onSubmit = async (values: FieldValues) => {
+    const response = await fetch("/api/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+    const content = await response.json();
+
+    // TODO: Add error handler
+    // if content.token -> store jwt token
+    // else show error message
+    console.log(content);
   };
 
   return (

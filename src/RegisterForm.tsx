@@ -16,8 +16,21 @@ const RegisterForm = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const onSubmit = (values: FieldValues) => {
-    console.log(values);
+  const onSubmit = async (values: FieldValues) => {
+    const response = await fetch("/api/register", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+    const content = await response.json();
+
+    // TODO: Add error handler
+    // if content.token -> store jwt token
+    // else show error message
+    console.log(content);
   };
   return (
     <div className="container my-10 mx-auto max-w-sm font-heading">
@@ -110,6 +123,7 @@ const RegisterForm = () => {
             )}
         </label>
 
+        {/* TODO: add api errors output */}
         <button type="submit">Register</button>
       </form>
     </div>
