@@ -10,12 +10,18 @@ export type TUser = {
 // NOTE: the globally available context
 export type TGlobal = {
   user: TUser | null;
-  loginUser: (user: TUser) => void;
-  logoutUser: () => void;
+  token: string | null;
+  login: (user: TAuth200) => void;
+  logout: () => void;
 };
 
 // NOTE: The response for successful user registeration
-export type TRegister200 = {
+export type TAuth200 = {
   user: TUser;
   token: string;
+};
+
+// NOTE: The response for unsuccessful user registeration
+export type TAuth400 = {
+  error: string;
 };
