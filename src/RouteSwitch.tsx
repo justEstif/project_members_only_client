@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./Home";
 import Layout from "./Layout";
-import LoginForm from "./LoginForm";
-import RegisterForm from "./RegisterForm";
+import Login from "./Login";
+import Register from "./Register";
 
 const RouteSwitch = () => {
   return (
@@ -9,8 +10,9 @@ const RouteSwitch = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           {/* TODO: Add redirect to home for register and login if there is a user */}
-          <Route path="register" element={<RegisterForm />} />
-          <Route path="login" element={<LoginForm />} />
+          <Route index element={<Home />} />
+          <Route path="register" element={<Register />} />
+          <Route path="login" element={<Login />} />
         </Route>
       </Routes>
     </BrowserRouter>
