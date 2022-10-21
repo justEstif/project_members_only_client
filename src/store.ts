@@ -5,19 +5,16 @@ import { TAuth200, TGlobal } from "./types";
 const useStore = create<TGlobal>()(
   persist(
     (set) => ({
-      user: null,
-      token: null,
+      auth: null,
       login: (auth: TAuth200) =>
         set((state) => ({
           ...state,
-          user: auth.user,
-          token: auth.token,
+          auth: auth
         })),
       logout: () =>
         set((state) => ({
           ...state,
-          user: null,
-          token: null,
+          auth: null,
         })),
     }),
     {

@@ -9,8 +9,7 @@ export type TUser = {
 
 // NOTE: the globally available context
 export type TGlobal = {
-  user: TUser | null;
-  token: string | null;
+  auth: TAuth200 | null;
   login: (user: TAuth200) => void;
   logout: () => void;
 };
