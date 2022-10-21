@@ -8,6 +8,7 @@ const RouteSwitch = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
+          {/* TODO: Add redirect to home for register and login if there is a user */}
           <Route path="register" element={<RegisterForm />} />
           <Route path="login" element={<LoginForm />} />
         </Route>
