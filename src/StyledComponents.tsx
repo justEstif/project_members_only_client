@@ -1,6 +1,6 @@
 import tw from "tailwind-styled-components";
 
-const SInput = tw.input`
+export const SInput = tw.input`
   block
   px-0.5
   mt-0
@@ -12,6 +12,3 @@ const SInput = tw.input`
   focus:ring-0
   font-body
 `;
-
-
-export default SInput

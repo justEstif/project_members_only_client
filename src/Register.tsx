@@ -1,9 +1,12 @@
 import { FieldValues, useForm } from "react-hook-form";
-import SInput from "./SInput";
+import { SInput } from "./StyledComponents";
 import useStore from "./store";
 import { TAuth200, TAuth400 } from "./types";
 
-const RegisterForm = () => {
+/**
+ * @description react component for registering user
+ */
+const Register = () => {
   type FormData = {
     name: string;
     userName: string;
@@ -147,4 +150,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default Register;
