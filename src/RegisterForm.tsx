@@ -26,6 +26,7 @@ const RegisterForm = () => {
     const response = await fetch("/api/register", {
       method: "POST",
       headers: {
+        Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(values),
@@ -33,7 +34,7 @@ const RegisterForm = () => {
 
     if (response.ok) {
       const auth = (await response.json()) as TAuth200;
-      store.login(auth)
+      store.login(auth);
     } else {
       const { error } = (await response
         .json()

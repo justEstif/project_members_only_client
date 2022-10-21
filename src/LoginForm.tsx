@@ -86,9 +86,7 @@ const LoginForm = () => {
         </label>
 
         {errors.password && errors.password.type === "custom" && (
-          <span role="alert">
-            {errors.password.message || "Incorrect email or password"}
-          </span>
+          <span role="alert">Incorrect email or password</span>
         )}
         <button type="submit">Login</button>
       </form>
