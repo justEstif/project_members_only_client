@@ -60,4 +60,15 @@ const App = () => {
 
 - Focus on functionality first
   - make sure you can register a user
+- Update dashboard based on user status
+
+2. In homepage:
+  - get messages with and without token
+  - if user
+    - create new message input: form
+  - else
+    - show logging alert
+
+1. Dashboard
+  - If user: change the nav bar
 

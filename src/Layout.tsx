@@ -9,6 +9,9 @@ const SPageLayout = tw.main`
   md:mx-auto
 `;
 
+/**
+ * @description react component to layout the page
+ */
 const Layout = () => {
   return (
     <SPageLayout>
