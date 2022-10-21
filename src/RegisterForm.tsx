@@ -1,7 +1,7 @@
 import { FieldValues, useForm } from "react-hook-form";
 import SInput from "./SInput";
-import { TRegister200 } from "./types";
-import ky, { HTTPError } from "ky";
+import useStore from "./store";
+import { TAuth200, TAuth400 } from "./types";
 
 const RegisterForm = () => {
   type FormData = {
@@ -11,34 +11,40 @@ const RegisterForm = () => {
     password: string; // min length 6
     passwordConfirmation: string;
   };
+
+  const store = useStore((state) => state);
+
   const {
     register,
     handleSubmit,
     getValues,
+    setError,
     formState: { errors },
   } = useForm<FormData>();
 
   const onSubmit = async (values: FieldValues) => {
-    try {
-      const response = await ky
-        .post("/api/register", {
-          json: values,
-        })
-        .json();
-      const { user, token } = response as TRegister200;
-      console.log(user, token);
-    } catch (error) {
-      if (error instanceof HTTPError) {
-        if (error.response.status === 400) {
-          console.log("Please try again with a different email and username");
-        } else {
-          console.log("Make sure the passwords match, ");
-        }
-      } else {
-        console.log("Server error, please try again later");
-      }
+    const response = await fetch("/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (response.ok) {
+      const auth = (await response.json()) as TAuth200;
+      store.login(auth)
+    } else {
+      const { error } = (await response
+        .json()
+        .catch((error) => error)) as TAuth400;
+      setError("email", {
+        type: "custom",
+        message: error,
+      });
     }
   };
+
   return (
     <div className="container my-10 mx-auto max-w-sm font-heading">
       <form
@@ -130,7 +136,10 @@ const RegisterForm = () => {
             )}
         </label>
 
-        {/* TODO: add api errors output */}
+        {errors.email && errors.email.type === "custom" && (
+          <span role="alert">{errors.email.message}</span>
+        )}
+
         <button type="submit">Register</button>
       </form>
     </div>
