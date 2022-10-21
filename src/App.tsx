@@ -1,4 +1,5 @@
 import tw from "tailwind-styled-components";
+import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 
 const SPageLayout = tw.main`
@@ -27,7 +28,8 @@ const App = () => {
   return (
     <SPageLayout>
       <Dashboard />
-      <RegisterForm />
+      {/* <RegisterForm /> */}
+      <LoginForm />
     </SPageLayout>
   );
 };
