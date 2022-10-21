@@ -1,26 +1,12 @@
 import create from "zustand/react";
 import { persist } from "zustand/middleware";
+import { TGlobal, TUser } from "./types";
 
-interface IUser {
-  id: string;
-  role: string;
-  name: string;
-  userName: string;
-  email: string;
-  token: string;
-}
-
-interface IGlobal {
-  user: IUser | null;
-  loginUser: (user: IUser) => void;
-  logoutUser: () => void;
-}
-
-const useStore = create<IGlobal>()(
+const useStore = create<TGlobal>()(
   persist(
     (set) => ({
       user: null,
-      loginUser: (user: IUser) =>
+      loginUser: (user: TUser) =>
         set((state) => ({
           ...state,
           user: user,
@@ -32,7 +18,7 @@ const useStore = create<IGlobal>()(
         })),
     }),
     {
-      name: "user-store",
+      name: "talaria-store",
     }
   )
 );
