@@ -5,7 +5,18 @@ import useStore from "./store";
  * @description react component that includes the website title and navbar
  */
 const Dashboard = () => {
-  const auth = useStore((state) => state.auth);
+  const { auth, logout } = useStore((state) => state);
+
+  const handleLogout = async () => {
+    await fetch("/api/logout", {
+      method: "GET",
+      headers: new Headers({
+        Authorization: `Bearer ${auth?.token}`,
+      }),
+    });
+
+    logout();
+  };
   return (
     <div className="flex flex-col gap-5 justify-center items-center font-dashboard">
       <h1 className="text-4xl md:text-6xl">Talaria</h1>
@@ -25,7 +36,7 @@ const Dashboard = () => {
 
           <li>
             {auth ? (
-              <Link to="/logout">Logout</Link>
+              <button onClick={handleLogout}>Logout</button>
             ) : (
               <Link to="/register">Register</Link>
             )}
