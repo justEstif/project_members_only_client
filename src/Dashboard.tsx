@@ -16,18 +16,18 @@ const Dashboard = () => {
           </li>
 
           <li>
-            {!auth ? (
-              <Link to="/login">Login</Link>
-            ) : (
+            {auth ? (
               <Link to="/account">Account</Link>
+            ) : (
+              <Link to="/login">Login</Link>
             )}
           </li>
 
           <li>
-            {!auth ? (
-              <Link to="/register">Register</Link>
-            ) : (
+            {auth ? (
               <Link to="/logout">Logout</Link>
+            ) : (
+              <Link to="/register">Register</Link>
             )}
           </li>
         </ul>
