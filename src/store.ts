@@ -1,20 +1,23 @@
-import create from "zustand/react";
+import create from 'zustand'
 import { persist } from "zustand/middleware";
-import { TGlobal, TUser } from "./types";
+import { TAuth200, TGlobal } from "./types";
 
 const useStore = create<TGlobal>()(
   persist(
     (set) => ({
       user: null,
-      loginUser: (user: TUser) =>
+      token: null,
+      login: (auth: TAuth200) =>
         set((state) => ({
           ...state,
-          user: user,
+          user: auth.user,
+          token: auth.token,
         })),
-      logoutUser: () =>
+      logout: () =>
         set((state) => ({
           ...state,
           user: null,
+          token: null,
         })),
     }),
     {
