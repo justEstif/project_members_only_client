@@ -7,6 +7,9 @@ import useStore from "./store";
 const Dashboard = () => {
   const { auth, logout } = useStore((state) => state);
 
+  /**
+   * @description function for logging out user invalidates jwt and create cookies
+   */
   const handleLogout = async () => {
     await fetch("/api/logout", {
       method: "GET",
