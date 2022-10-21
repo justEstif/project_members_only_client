@@ -1,5 +1,7 @@
 import { FieldValues, useForm } from "react-hook-form";
 import SInput from "./SInput";
+import { TRegister200 } from "./types";
+import ky, { HTTPError } from "ky";
 
 const RegisterForm = () => {
   type FormData = {
@@ -17,20 +19,25 @@ const RegisterForm = () => {
   } = useForm<FormData>();
 
   const onSubmit = async (values: FieldValues) => {
-    const response = await fetch("/api/register", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    });
-    const content = await response.json();
-
-    // TODO: Add error handler
-    // if content.token -> store jwt token
-    // else show error message
-    console.log(content);
+    try {
+      const response = await ky
+        .post("/api/register", {
+          json: values,
+        })
+        .json();
+      const { user, token } = response as TRegister200;
+      console.log(user, token);
+    } catch (error) {
+      if (error instanceof HTTPError) {
+        if (error.response.status === 400) {
+          console.log("Please try again with a different email and username");
+        } else {
+          console.log("Make sure the passwords match, ");
+        }
+      } else {
+        console.log("Server error, please try again later");
+      }
+    }
   };
   return (
     <div className="container my-10 mx-auto max-w-sm font-heading">
