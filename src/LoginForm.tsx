@@ -1,5 +1,7 @@
 import { FieldValues, useForm } from "react-hook-form";
 import SInput from "./SInput";
+import useStore from "./store";
+import { TAuth200, TAuth400 } from "./types";
 
 const LoginForm = () => {
   type FormData = {
@@ -9,27 +11,33 @@ const LoginForm = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<FormData>();
 
-  const onSubmit = async (values: FieldValues) => {
-    try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-      const content = await response.json();
+  const store = useStore((state) => state);
 
-      // TODO: Add error handler
-      // if content.token -> store jwt token -> redirect to home page
-      // else show error message
-      console.log(content);
-    } catch (error) {
-      console.log(error);
+  const onSubmit = async (values: FieldValues) => {
+    const response = await fetch("/api/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (response.ok) {
+      const auth = (await response.json()) as TAuth200;
+      store.login(auth);
+    } else {
+      const { error } = (await response
+        .json()
+        .catch((error) => error)) as TAuth400;
+      setError("password", {
+        type: "custom",
+        message: error,
+      });
     }
   };
 
@@ -77,6 +85,9 @@ const LoginForm = () => {
           )}
         </label>
 
+        {errors.password && errors.password.type === "custom" && (
+          <span role="alert">{errors.password.message}</span>
+        )}
         <button type="submit">Login</button>
       </form>
     </div>
