@@ -3,6 +3,7 @@ import useStore from "./store";
 
 /**
  * @description react component that includes the website title and navbar
+ * @returns website title and navbar
  */
 const Dashboard = () => {
   const { auth, logout } = useStore((state) => state);
@@ -46,6 +47,7 @@ const Dashboard = () => {
           </li>
         </ul>
       </nav>
+      {/* TODO: Add night mode switch */}
     </div>
   );
 };

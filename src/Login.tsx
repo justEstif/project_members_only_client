@@ -5,6 +5,7 @@ import { TAuth200, TAuth400 } from "./types";
 
 /**
  * @description react component for logging user
+ * @returns login form
  */
 const Login = () => {
   type FormData = {
@@ -18,7 +19,7 @@ const Login = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const store = useStore((state) => state);
+  const login = useStore((state) => state.login);
 
   const onSubmit = async (values: FieldValues) => {
     const response = await fetch("/api/login", {
@@ -32,7 +33,7 @@ const Login = () => {
 
     if (response.ok) {
       const auth = (await response.json()) as TAuth200;
-      store.login(auth);
+      login(auth);
     } else {
       const { error } = (await response
         .json()

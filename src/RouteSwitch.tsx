@@ -5,6 +5,10 @@ import Login from "./Login";
 import Register from "./Register";
 import useStore from "./store";
 
+/**
+ * @description react component to handle routes
+ * @returns routes with redirect if user is active
+ */
 const RouteSwitch = () => {
   const auth = useStore((state) => state.auth);
   return (

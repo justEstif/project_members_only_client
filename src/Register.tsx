@@ -5,6 +5,7 @@ import { TAuth200, TAuth400 } from "./types";
 
 /**
  * @description react component for registering user
+ * @returns register form
  */
 const Register = () => {
   type FormData = {
@@ -15,7 +16,7 @@ const Register = () => {
     passwordConfirmation: string;
   };
 
-  const store = useStore((state) => state);
+  const login = useStore((state) => state.login);
 
   const {
     register,
@@ -37,7 +38,7 @@ const Register = () => {
 
     if (response.ok) {
       const auth = (await response.json()) as TAuth200;
-      store.login(auth);
+      login(auth);
     } else {
       const { error } = (await response
         .json()

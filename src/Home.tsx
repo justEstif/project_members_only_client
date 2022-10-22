@@ -1,3 +1,7 @@
+/**
+ * @description home page
+ * @returns new message form, and messages
+ */
 const Home = () => {
   return (
     <div className="container my-10 mx-auto font-heading">
