@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import useStore from "./store";
 import { SInput } from "./StyledComponents";
-import { TMessage } from "./types";
+import { TAuth400, TMessage } from "./types";
 
 /**
  * @description the messages in the db
+ * @returns the messages, with or without username and date
  */
 const Messages = () => {
-  // create messages state
   const [messages, setMessages] = useState<TMessage[] | null>(null);
   const token = useStore((state) => state.auth?.token);
 
@@ -25,7 +25,7 @@ const Messages = () => {
         setMessages(json);
       } else {
         const error = (await response.json().catch((error) => error)) as string;
-        console.log(error);
+        console.log(error); // TODO: better error handling
       }
     };
 
@@ -37,9 +37,13 @@ const Messages = () => {
       return <span>Be the first to write a message!</span>;
     }
     return (
+      // TODO: Improve output
       <div>
         {messages.map((message, i) => (
-          <span key={i}>{message.text}</span>
+          <span key={i}>
+            {message.user ? message.user.userName : "anon"}
+            {message.text}
+          </span>
         ))}
       </div>
     );
@@ -52,13 +56,28 @@ const Messages = () => {
  */
 const MessageForm = () => {
   type FormData = {
-    message: string;
+    text: string;
   };
   const { register, handleSubmit } = useForm<FormData>();
-  // const token = useStore((state) => state.auth?.token);
-  const onSubmit = (values: FieldValues) => {
-    // TODO: call api here
-    console.log(values);
+  const token = useStore((state) => state.auth?.token);
+  const onSubmit = async (values: FieldValues) => {
+    const response = await fetch("/api/message", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (response.ok) {
+      (await response.json()) as { message: TMessage };
+      // TODO: handle successful output
+    } else {
+      (await response.json().catch((error) => error)) as TAuth400;
+      // TODO: handle error
+    }
   };
 
   return (
@@ -85,7 +104,7 @@ const MessageForm = () => {
           <SInput
             type="message"
             placeholder="Enter your message"
-            {...register("message", { required: true })}
+            {...register("text", { required: true })}
           />
         </div>
       </label>
