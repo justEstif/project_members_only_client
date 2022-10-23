@@ -1,12 +1,50 @@
+import { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import useStore from "./store";
 import { SInput } from "./StyledComponents";
+import { TMessage } from "./types";
 
 /**
  * @description the messages in the db
  */
 const Messages = () => {
-  return <div>The messages</div>;
+  // create messages state
+  const [messages, setMessages] = useState<TMessage[] | null>(null);
+  const token = useStore((state) => state.auth?.token);
+
+  useEffect(() => {
+    const getMessages = async () => {
+      const response = await fetch("/api/message", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const json = (await response.json()) as TMessage[];
+        setMessages(json);
+      } else {
+        const error = (await response.json().catch((error) => error)) as string;
+        console.log(error);
+      }
+    };
+
+    getMessages();
+  }, []);
+
+  if (messages) {
+    if (messages.length === 0) {
+      return <span>Be the first to write a message!</span>;
+    }
+    return (
+      <div>
+        {messages.map((message, i) => (
+          <span key={i}>{message.text}</span>
+        ))}
+      </div>
+    );
+  }
+  return <span>Error loading</span>;
 };
 
 /**
