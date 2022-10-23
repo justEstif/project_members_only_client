@@ -41,5 +41,8 @@ export type TMessage = {
   text: string;
   createdAt: Date;
   updatedAt: Date;
-  userId: string | null;
+  user?: {
+    id: true;
+    userName: true;
+  };
 };
