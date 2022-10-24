@@ -15,6 +15,7 @@ export type TUser = {
 export type TGlobal = {
   auth: TAuth200 | null;
   login: (user: TAuth200) => void;
+  updateUser: (user: TAuth200) => void;
   logout: () => void;
 };
 

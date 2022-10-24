@@ -1,6 +1,6 @@
-import create from 'zustand'
+import create from "zustand";
 import { persist } from "zustand/middleware";
-import { TAuth200, TGlobal } from "./types";
+import { TAuth200, TGlobal, TUser } from "./types";
 
 const useStore = create<TGlobal>()(
   persist(
@@ -9,12 +9,17 @@ const useStore = create<TGlobal>()(
       login: (auth: TAuth200) =>
         set((state) => ({
           ...state,
-          auth: auth
+          auth: auth,
         })),
       logout: () =>
         set((state) => ({
           ...state,
           auth: null,
+        })),
+      updateUser: (auth: TAuth200) =>
+        set((state) => ({
+          ...state,
+          auth: auth,
         })),
     }),
     {
