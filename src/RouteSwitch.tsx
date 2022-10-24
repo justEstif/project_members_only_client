@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import Account from "./Account";
 import Home from "./Home";
 import Layout from "./Layout";
 import Login from "./Login";
@@ -23,6 +24,11 @@ const RouteSwitch = () => {
           <Route
             path="login"
             element={auth ? <Navigate replace to="/" /> : <Login />}
+          />
+
+          <Route
+            path="account"
+            element={auth ? <Account /> : <Navigate replace to="/" />}
           />
         </Route>
       </Routes>
