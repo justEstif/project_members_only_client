@@ -20,6 +20,7 @@ const Home = () => {
       {auth ? (
         <MessageForm execute={execute} />
       ) : (
+          // TODO: Add better login message
         <span>Login to write a message</span>
       )}
       <Messages messages={value} error={error} status={status} />
