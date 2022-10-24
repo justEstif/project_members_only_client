@@ -6,7 +6,6 @@ import Messages from "./Messages";
  * @description home page
  * @returns new message form, and messages
  */
-
 const Home = () => {
   const auth = useStore((state) => state.auth);
   return (

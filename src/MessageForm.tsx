@@ -18,13 +18,14 @@ const MessageForm = () => {
       headers: {
         Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`, // include user's jwt token
       },
-      body: JSON.stringify(values),
+      body: JSON.stringify(values), // add the form values to post req
     });
 
     if (response.ok) {
       (await response.json()) as { message: TMessage };
+      // TODO: render message component here
       // TODO: handle successful output
     } else {
       (await response.json().catch((error) => error)) as TAuth400;

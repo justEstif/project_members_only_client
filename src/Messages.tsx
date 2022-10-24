@@ -7,11 +7,11 @@ import useStore from "./store";
  * @returns the messages, with or without username and date
  */
 
-
 const Messages = () => {
   const [messages, setMessages] = useState<TMessage[] | null>(null);
   const token = useStore((state) => state.auth?.token);
 
+  // TODO: On page load and on message form successful submit
   useEffect(() => {
     const getMessages = async () => {
       const response = await fetch("/api/message", {
