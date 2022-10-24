@@ -17,7 +17,11 @@ const Home = () => {
   >(getMessages, { token: auth?.token || "" });
   return (
     <div className="container my-10 mx-auto font-heading">
-      {auth ? <MessageForm execute={execute} /> : <span>Login</span>}
+      {auth ? (
+        <MessageForm execute={execute} />
+      ) : (
+        <span>Login to write a message</span>
+      )}
       <Messages messages={value} error={error} status={status} />
     </div>
   );

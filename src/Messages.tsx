@@ -42,15 +42,20 @@ const Messages = ({ messages, error, status }: TMessages) => {
           <div className="grid grid-cols-1 gap-4">
             {messages.map((item, i) => (
               <SMessage key={i}>
-                <div className='grid grid-rows-2 gap-3'>
+                <div className="grid grid-rows-2 gap-1">
                   {item.user ? (
                     <div className="text-green-700">{item.user.userName}</div>
                   ) : (
-                    <div className="text-green-700 text-lg">anonymous</div>
+                    <div className="text-lg text-green-700">anonymous</div>
                   )}
-                  <div>{item.createdAt.toString()}</div>
+                  <div>
+                    <div>{new Date(item.createdAt).toLocaleTimeString()}</div>
+                    <div>{new Date(item.createdAt).toDateString()}</div>
+                  </div>
                 </div>
-                <div className='font-heading text-lg text-blue-700'>{item.text}</div>
+                <div className="text-lg text-blue-700 break-words font-heading">
+                  {item.text}
+                </div>
               </SMessage>
             ))}
           </div>
