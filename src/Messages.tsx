@@ -1,32 +1,34 @@
 import { useCallback, useEffect, useState } from "react";
 import { TMessage } from "./types";
-// import useStore from "./store";
+import useStore from "./store";
 
 /**
  * @description the messages in the db
  * @returns the messages, with or without username and date
  */
 const Messages = () => {
-  // const token = useStore((state) => state.auth?.token);
-  const { execute, status, value, error } = useAsync<TMessage[] | string>(
-    getMessages
-  );
+  const token = useStore((state) => state.auth?.token);
+  const { execute, status, value, error } = useAsync<
+    TMessage[] | string,
+    TMsgArg
+  >(getMessages, { token: token || "" });
 
-  if (typeof value === "string") {
-    console.error(value); // TODO: If the response === string this is an error
+  // TODO: If the response === string this is an error
+  if (status === "idle") {
+    return <div>Loading ...</div>;
+  } else if (status === "error") {
+    return <div>{error}</div>;
   } else {
-    console.table(value);
+    if (typeof value === "string") {
+      return <div>{value}</div>;
+    } else {
+      if (!value) {
+        return <div>{value}</div>;
+      } else {
+        return value.map((va, i) => <span key={i}>{va.text}</span>);
+      }
+    }
   }
-  return (
-    <div>
-      {status === "idle" && <div>Start your journey by clicking a button</div>}
-      {status === "success" && <div>Works</div>}
-      {status === "error" && <div>{error}</div>}
-      <button onClick={execute} disabled={status === "pending"}>
-        {status !== "pending" ? "Click me" : "Loading..."}
-      </button>
-    </div>
-  );
 };
 
 export default Messages;
@@ -34,8 +36,9 @@ export default Messages;
 /**
  * @description custom hook for running async functions immediate and when called
  */
-const useAsync = <T, E = "string">(
-  asyncFunction: () => Promise<T>,
+const useAsync = <T, F, E = "string">(
+  asyncFunction: (args: F) => Promise<T>,
+  funcArgs: F,
   immediate = true
 ) => {
   const [status, setStatus] = useState<
@@ -50,8 +53,9 @@ const useAsync = <T, E = "string">(
     setError(null);
 
     try {
-      const response = await asyncFunction();
+      const response = await asyncFunction(funcArgs);
       setValue(response);
+      setStatus("success");
     } catch (error) {
       setError(error as any);
       setStatus("error");
@@ -67,17 +71,19 @@ const useAsync = <T, E = "string">(
   return { execute, status, value, error };
 };
 
+type TMsgArg = {
+  token: string;
+};
 /**
  * @description async function for getting messages from server
  * @returns the api response if successful
  * @returns error message if fail
  */
-const getMessages = async () => {
+const getMessages = async ({ token }: TMsgArg) => {
   const response = await fetch("/api/message", {
     method: "GET",
-    // TODO: add the jwt token
     headers: new Headers({
-      Authorization: `Bearer ${""}`,
+      Authorization: `Bearer ${token}`,
     }),
   });
 
