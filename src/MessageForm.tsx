@@ -3,10 +3,13 @@ import { SInput } from "./StyledComponents";
 import { TAuth400, TMessage } from "./types";
 import { FieldValues, useForm } from "react-hook-form";
 
+type TMessageForm = {
+  execute: () => Promise<void>;
+};
 /**
  * @description the new message form that is only accessible to logged in users
  */
-const MessageForm = () => {
+const MessageForm = ({ execute }: TMessageForm) => {
   type FormData = {
     text: string;
   };
@@ -25,6 +28,7 @@ const MessageForm = () => {
 
     if (response.ok) {
       (await response.json()) as { message: TMessage };
+      execute();
       // TODO: render message component here
       // TODO: handle successful output
     } else {
