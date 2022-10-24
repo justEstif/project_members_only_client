@@ -1,56 +1,90 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TMessage } from "./types";
-import useStore from "./store";
+// import useStore from "./store";
 
 /**
  * @description the messages in the db
  * @returns the messages, with or without username and date
  */
-
 const Messages = () => {
-  const [messages, setMessages] = useState<TMessage[] | null>(null);
-  const token = useStore((state) => state.auth?.token);
+  // const token = useStore((state) => state.auth?.token);
+  const { execute, status, value, error } = useAsync<TMessage[] | string>(
+    getMessages
+  );
 
-  // TODO: On page load and on message form successful submit
-  useEffect(() => {
-    const getMessages = async () => {
-      const response = await fetch("/api/message", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        const json = (await response.json()) as TMessage[];
-        setMessages(json);
-      } else {
-        const error = (await response.json().catch((error) => error)) as string;
-        console.log(error); // TODO: better error handling
-      }
-    };
-
-    getMessages();
-  }, []);
-
-  if (messages) {
-    if (messages.length === 0) {
-      return <span>Be the first to write a message!</span>;
-    } else {
-      return (
-        // TODO: Improve output
-        <div>
-          {messages.map((message, i) => (
-            <span key={i}>
-              {message.user ? message.user.userName : "anon"}
-              {message.text}
-            </span>
-          ))}
-        </div>
-      );
-    }
+  if (typeof value === "string") {
+    console.error(value); // TODO: If the response === string this is an error
   } else {
-    return <span>Error loading</span>;
+    console.table(value);
   }
+  return (
+    <div>
+      {status === "idle" && <div>Start your journey by clicking a button</div>}
+      {status === "success" && <div>Works</div>}
+      {status === "error" && <div>{error}</div>}
+      <button onClick={execute} disabled={status === "pending"}>
+        {status !== "pending" ? "Click me" : "Loading..."}
+      </button>
+    </div>
+  );
 };
 
 export default Messages;
+
+/**
+ * @description custom hook for running async functions immediate and when called
+ */
+const useAsync = <T, E = "string">(
+  asyncFunction: () => Promise<T>,
+  immediate = true
+) => {
+  const [status, setStatus] = useState<
+    "idle" | "pending" | "success" | "error"
+  >("idle");
+  const [value, setValue] = useState<T | null>(null);
+  const [error, setError] = useState<E | null>(null);
+
+  const execute = useCallback(async () => {
+    setStatus("pending");
+    setValue(null);
+    setError(null);
+
+    try {
+      const response = await asyncFunction();
+      setValue(response);
+    } catch (error) {
+      setError(error as any);
+      setStatus("error");
+    }
+  }, [asyncFunction]);
+
+  useEffect(() => {
+    if (immediate) {
+      execute();
+    }
+  }, [execute, immediate]);
+
+  return { execute, status, value, error };
+};
+
+/**
+ * @description async function for getting messages from server
+ * @returns the api response if successful
+ * @returns error message if fail
+ */
+const getMessages = async () => {
+  const response = await fetch("/api/message", {
+    method: "GET",
+    // TODO: add the jwt token
+    headers: new Headers({
+      Authorization: `Bearer ${""}`,
+    }),
+  });
+
+  if (response.ok) {
+    return (await response.json()) as TMessage[];
+  } else {
+    const error = (await response.json().catch((error) => error)) as string;
+    return error;
+  }
+};
