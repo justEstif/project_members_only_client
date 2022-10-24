@@ -18,7 +18,7 @@ const Home = () => {
   return (
     <div className="container my-10 mx-auto font-heading">
       {auth ? <MessageForm execute={execute} /> : <span>Login</span>}
-      <Messages value={value} error={error} status={status} />
+      <Messages messages={value} error={error} status={status} />
     </div>
   );
 };
@@ -28,6 +28,7 @@ export default Home;
 type TMsgArg = {
   token: string;
 };
+
 /**
  * @description async function for getting messages from server
  * @returns the api response if successful

@@ -6,6 +6,7 @@ import { FieldValues, useForm } from "react-hook-form";
 type TMessageForm = {
   execute: () => Promise<void>;
 };
+
 /**
  * @description the new message form that is only accessible to logged in users
  */
@@ -13,7 +14,7 @@ const MessageForm = ({ execute }: TMessageForm) => {
   type FormData = {
     text: string;
   };
-  const { register, handleSubmit } = useForm<FormData>();
+  const { register, handleSubmit, reset } = useForm<FormData>();
   const token = useStore((state) => state.auth?.token);
   const onSubmit = async (values: FieldValues) => {
     const response = await fetch("/api/message", {
@@ -28,9 +29,8 @@ const MessageForm = ({ execute }: TMessageForm) => {
 
     if (response.ok) {
       (await response.json()) as { message: TMessage };
-      execute();
-      // TODO: render message component here
-      // TODO: handle successful output
+      execute(); // get messages
+      reset(); // reset form
     } else {
       (await response.json().catch((error) => error)) as TAuth400;
       // TODO: handle error
@@ -38,7 +38,7 @@ const MessageForm = ({ execute }: TMessageForm) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="py-5">
       <label>
         <div className="flex gap-3">
           <button type="submit">
