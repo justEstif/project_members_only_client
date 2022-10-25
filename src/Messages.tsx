@@ -73,7 +73,7 @@ const Messages = ({ messages, error, status, execute }: TMessages) => {
       execute();
     } else {
       const error = (await response.json().catch((error) => error)) as string;
-      // return error;
+      // TODO: Add better error handler
     }
   };
   if (status === "idle") {
@@ -81,7 +81,7 @@ const Messages = ({ messages, error, status, execute }: TMessages) => {
   } else if (status === "error") {
     return <div>{error}</div>; // TODO: error handling
   } else {
-    // TODO: If the response === string this is an error
+    // NOTE: If the response === string this is an error
     if (typeof messages === "string") {
       return <div>{messages}</div>;
     } else {
@@ -116,6 +116,7 @@ const Messages = ({ messages, error, status, execute }: TMessages) => {
                   {user && item.user?.userName === user?.userName ? (
                     <div className="flex gap-4 justify-end pb-3">
                       <button>
+                        {/* TODO: Add edit handler */}
                         <EditIcon />
                       </button>
 
@@ -126,10 +127,12 @@ const Messages = ({ messages, error, status, execute }: TMessages) => {
                       </button>
                     </div>
                   ) : user?.role === "ADMIN" ? (
-                    <div>Only show delete button</div>
-                  ) : (
-                    ""
-                  )}
+                    <button
+                      onClick={async () => await handleMessageDelete(item.id)}
+                    >
+                      <DeleteIcon />
+                    </button>
+                  ) : null}
 
                   <div className="text-lg text-blue-700 break-words font-heading">
                     {item.text}

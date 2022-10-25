@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useStore from "./store";
 
 /**
@@ -7,6 +7,7 @@ import useStore from "./store";
  */
 const Dashboard = () => {
   const { auth, logout } = useStore((state) => state);
+  const navigate = useNavigate();
 
   /**
    * @description function for logging out user invalidates jwt and create cookies
@@ -20,6 +21,7 @@ const Dashboard = () => {
     });
 
     logout();
+    location.reload(); // refresh page on logout
   };
   return (
     <div className="flex flex-col gap-5 justify-center items-center font-dashboard">
