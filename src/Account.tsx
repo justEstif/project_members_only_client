@@ -46,6 +46,32 @@ const Account = () => {
     }
   };
 
+  const UpdateForm = () => {
+    if (auth && auth.user.role === "USER") {
+      return (
+        <div>
+          <span className="text-gray-700">Become a member:</span>
+          <SInput type="text" {...register("secretKey")} />
+        </div>
+      );
+    } else if (auth && auth.user.role === "MEMBER") {
+      return (
+        <div>
+          <span className="text-gray-700">Become an admin:</span>
+          <SInput type="text" {...register("secretKey")} />
+        </div>
+      );
+    } else if (auth && auth.user.role === "ADMIN") {
+      return (
+        <div>
+          <span className="text-gray-700">Already admin</span>
+        </div>
+      );
+    } else {
+      return <div>Nothing to show</div>;
+    }
+  };
+
   return (
     <div>
       <form
@@ -53,13 +79,7 @@ const Account = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <label>
-          {auth && auth.user.role === "USER" && (
-            <span className="text-gray-700">Become a member:</span>
-          )}
-          {auth && auth.user.role === "MEMBER" && (
-            <span className="text-gray-700">Become an admin:</span>
-          )}
-          <SInput type="text" {...register("secretKey")} />
+          <UpdateForm />
         </label>
       </form>
     </div>
