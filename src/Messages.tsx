@@ -6,6 +6,7 @@ type TMessages = {
   messages: string | TMessage[] | null;
   error: string | null;
   status: "idle" | "pending" | "success" | "error";
+  execute: () => Promise<void>;
 };
 
 const EditIcon = () => (
@@ -56,8 +57,25 @@ const SMessage = tw.div`
  * @description the messages in the db
  * @returns the messages, username and date
  */
-const Messages = ({ messages, error, status }: TMessages) => {
+const Messages = ({ messages, error, status, execute }: TMessages) => {
   const user = useStore((state) => state.auth?.user);
+  const token = useStore((state) => state.auth?.token);
+
+  const handleMessageDelete = async (id: string) => {
+    const response = await fetch(`/api/message/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      execute();
+    } else {
+      const error = (await response.json().catch((error) => error)) as string;
+      // return error;
+    }
+  };
   if (status === "idle") {
     return <div>Loading ...</div>;
   } else if (status === "error") {
@@ -80,7 +98,11 @@ const Messages = ({ messages, error, status }: TMessages) => {
               <SMessage key={i}>
                 <div className="grid grid-rows-2 gap-1">
                   {item.user ? (
-                    <div className="text-green-700">{item.user.userName}</div>
+                    <div className="text-green-700">
+                      {item.user.userName === user?.userName
+                        ? item.user.userName + "(me)"
+                        : item.user.userName}
+                    </div>
                   ) : (
                     <div className="text-lg text-green-700">anonymous</div>
                   )}
@@ -91,10 +113,17 @@ const Messages = ({ messages, error, status }: TMessages) => {
                 </div>
 
                 <div>
-                  {item.user?.userName === user?.userName ? (
+                  {user && item.user?.userName === user?.userName ? (
                     <div className="flex gap-4 justify-end pb-3">
-                      <EditIcon />
-                      <DeleteIcon />
+                      <button>
+                        <EditIcon />
+                      </button>
+
+                      <button
+                        onClick={async () => await handleMessageDelete(item.id)}
+                      >
+                        <DeleteIcon />
+                      </button>
                     </div>
                   ) : user?.role === "ADMIN" ? (
                     <div>Only show delete button</div>

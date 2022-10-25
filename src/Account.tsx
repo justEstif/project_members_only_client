@@ -46,6 +46,9 @@ const Account = () => {
     }
   };
 
+  /**
+   * @description react component that show the span based on user role
+   */
   const UpdateForm = () => {
     if (auth && auth.user.role === "USER") {
       return (
