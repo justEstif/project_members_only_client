@@ -2,6 +2,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import { TUser } from "./types";
 import useStore from "./store";
 import { SInput } from "./StyledComponents";
+import { useNavigate } from "react-router-dom";
 
 /**
  * @description account page function component
@@ -17,6 +18,7 @@ const Account = () => {
   };
   const { auth, updateUser } = useStore((state) => state);
   const { register, handleSubmit } = useForm<FormData>();
+  const navigate = useNavigate();
 
   /**
    * @description update the user on form submit
@@ -36,6 +38,7 @@ const Account = () => {
       const user = (await response.json()) as TUser;
       if (auth?.token) {
         updateUser({ user: user, token: auth?.token });
+        navigate("/");
       } else {
         const error = await response.json().catch((error) => error);
         console.error(error);
