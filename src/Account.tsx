@@ -19,7 +19,7 @@ const Account = () => {
   const { register, handleSubmit } = useForm<FormData>();
 
   /**
-   * @description update the user
+   * @description update the user on form submit
    */
   const onSubmit = async (values: FieldValues) => {
     const response = await fetch(`/api/user/${auth ? auth.user.id : ""}`, {
@@ -41,26 +41,26 @@ const Account = () => {
         console.error(error);
       }
     }
-
-    return (
-      <div>
-        <form
-          className="grid grid-cols-1 gap-6"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <label>
-            {auth && auth.user.role === "USER" && (
-              <span className="text-gray-700">Become a member:</span>
-            )}
-            {auth && auth.user.role === "MEMBER" && (
-              <span className="text-gray-700">Become an admin:</span>
-            )}
-            <SInput type="text" {...register("secretKey")} />
-          </label>
-        </form>
-      </div>
-    );
   };
+
+  return (
+    <div>
+      <form
+        className="grid grid-cols-1 gap-6"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <label>
+          {auth && auth.user.role === "USER" && (
+            <span className="text-gray-700">Become a member:</span>
+          )}
+          {auth && auth.user.role === "MEMBER" && (
+            <span className="text-gray-700">Become an admin:</span>
+          )}
+          <SInput type="text" {...register("secretKey")} />
+        </label>
+      </form>
+    </div>
+  );
 };
 
 export default Account;
