@@ -13,3 +13,9 @@
 - [ ] update user role
 
 4. [ ] Add admin only functions
+
+- delete user and message
+
+5. [ ] Add message edit and delete for user
+
+6. [ ] Add update user

@@ -16,6 +16,11 @@ const MessageForm = ({ execute }: TMessageForm) => {
   };
   const { register, handleSubmit, reset } = useForm<FormData>();
   const token = useStore((state) => state.auth?.token);
+
+  /**
+   * @description form submit function; send post request to api/message
+   * @fires execute: function will get messages again on submit
+   */
   const onSubmit = async (values: FieldValues) => {
     const response = await fetch("/api/message", {
       method: "POST",
@@ -32,8 +37,8 @@ const MessageForm = ({ execute }: TMessageForm) => {
       execute(); // get messages
       reset(); // reset form
     } else {
-      (await response.json().catch((error) => error)) as TAuth400;
       // TODO: handle error
+      (await response.json().catch((error) => error)) as TAuth400;
     }
   };
 
