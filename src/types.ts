@@ -43,7 +43,7 @@ export type TMessage = {
   createdAt: Date;
   updatedAt: Date;
   user?: {
-    id: true;
-    userName: true;
+    id: string;
+    userName: string;
   };
 };
