@@ -3,25 +3,30 @@ import MessageForm from "./MessageForm";
 import Messages from "./Messages";
 import { TMessage } from "./types";
 import useAsync from "./useAsync";
+import { Link } from "react-router-dom";
 
 /**
  * @description home page
- * @returns new message form, and messages
+ * @returns if auth: new message form and messages; else only messages
  */
 const Home = () => {
+  /** auth from zustand store */
   const auth = useStore((state) => state.auth);
 
+  /** get messages with token*/
   const { execute, status, value, error } = useAsync<
     TMessage[] | string,
-    TMsgArg
+    TGetMessages
   >(getMessages, { token: auth?.token || "" });
+
   return (
     <div className="container my-10 mx-auto font-heading">
       {auth ? (
         <MessageForm execute={execute} />
       ) : (
-        // TODO: Add better login message
-        <span>Login to write a message</span>
+        <div className="py-5 underline underline-offset-8 decoration-red-500">
+          <Link to="/login">Login to write a message</Link>
+        </div>
       )}
       <Messages
         execute={execute}
@@ -35,16 +40,15 @@ const Home = () => {
 
 export default Home;
 
-type TMsgArg = {
+type TGetMessages = {
   token: string;
 };
 
 /**
  * @description async function for getting messages from server
- * @returns the api response if successful
- * @returns error message if fail
+ * @returns the api response if successful; else error message
  */
-const getMessages = async ({ token }: TMsgArg) => {
+const getMessages = async ({ token }: TGetMessages) => {
   const response = await fetch("/api/message", {
     method: "GET",
     headers: new Headers({
