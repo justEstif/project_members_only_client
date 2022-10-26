@@ -28,12 +28,7 @@ const Home = () => {
           <Link to="/login">Login to write a message</Link>
         </div>
       )}
-      <Messages
-        execute={execute}
-        messages={value}
-        error={error}
-        status={status}
-      />
+      <Messages execute={execute} value={value} error={error} status={status} />
     </div>
   );
 };
@@ -46,7 +41,7 @@ type TGetMessages = {
 
 /**
  * @description async function for getting messages from server
- * @returns the api response if successful; else error message
+ * @returns the api response if successful; else empty object
  */
 const getMessages = async ({ token }: TGetMessages) => {
   const response = await fetch("/api/message", {
@@ -59,7 +54,10 @@ const getMessages = async ({ token }: TGetMessages) => {
   if (response.ok) {
     return (await response.json()) as TMessage[];
   } else {
-    const error = (await response.json().catch((error) => error)) as string;
-    return error;
+    const error = await response.json().catch((error) => error);
+    if (typeof error === "string") {
+      return error as string;
+    }
+    throw new Error(error);
   }
 };
