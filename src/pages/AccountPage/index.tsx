@@ -1,13 +1,13 @@
 import { FieldValues, useForm } from "react-hook-form";
-import { TUser } from "./types";
-import useStore from "./store";
-import { SInput } from "./StyledComponents";
+import { TUser } from "../../types";
+import useStore from "../../store";
+import SInput from "../../components/SInput";
 import { useNavigate } from "react-router-dom";
 
 /**
  * @description account page function component
  */
-const Account = () => {
+const AccountPage = () => {
   type FormData = {
     name?: string;
     userName?: string;
@@ -89,4 +89,4 @@ const Account = () => {
   );
 };
 
-export default Account;
+export default AccountPage;

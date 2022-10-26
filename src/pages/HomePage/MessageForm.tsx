@@ -1,6 +1,6 @@
-import useStore from "../store";
-import { SInput } from "../StyledComponents";
-import { TAuth400, TMessage } from "../types";
+import useStore from "../../store";
+import SInput from "../../components/SInput";
+import { TAuth400, TMessage } from "../../types";
 import { FieldValues, useForm } from "react-hook-form";
 
 type TMessageForm = {

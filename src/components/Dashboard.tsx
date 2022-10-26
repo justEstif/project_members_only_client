@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import useStore from "./store";
+import useStore from "../store";
 
 /**
  * @description react component that includes the website title and navbar

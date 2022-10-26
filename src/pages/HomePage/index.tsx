@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import MessageForm from "./MessageForm";
 import Messages from "./Messages";
-import useStore from "../store";
-import { TMessage } from "../types";
-import useAsync from "../useAsync";
+import useStore from "../../store";
+import { TMessage } from "../../types";
+import useAsync from "../../useAsync";
 
 /**
  * @description home page

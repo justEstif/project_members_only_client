@@ -1,13 +1,13 @@
 import { FieldValues, useForm } from "react-hook-form";
-import { SInput } from "./StyledComponents";
-import useStore from "./store";
-import { TAuth200, TAuth400 } from "./types";
+import SInput from "../../components/SInput";
+import useStore from "../../store";
+import { TAuth200, TAuth400 } from "../../types";
 
 /**
  * @description react component for logging user
  * @returns login form
  */
-const Login = () => {
+const LoginPage = () => {
   type FormData = {
     email: string;
     password: string; // min length 6
@@ -98,4 +98,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

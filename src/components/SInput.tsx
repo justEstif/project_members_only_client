@@ -3,7 +3,7 @@ import tw from "tailwind-styled-components";
 /**
  * @description styled form input
  */
-export const SInput = tw.input`
+const SInput = tw.input`
   block
   px-0.5
   py-1
@@ -16,3 +16,5 @@ export const SInput = tw.input`
   focus:border-black
   font-body
 `;
+
+export default SInput;

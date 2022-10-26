@@ -1,6 +1,6 @@
 import tw from "tailwind-styled-components";
-import { TMessage } from "../types";
-import useStore from "../store";
+import { TMessage } from "../../types";
+import useStore from "../../store";
 
 type TMessages = {
   value: TMessage[] | string | null;
