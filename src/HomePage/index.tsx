@@ -1,15 +1,15 @@
-import useStore from "./store";
+import { Link } from "react-router-dom";
 import MessageForm from "./MessageForm";
 import Messages from "./Messages";
-import { TMessage } from "./types";
-import useAsync from "./useAsync";
-import { Link } from "react-router-dom";
+import useStore from "../store";
+import { TMessage } from "../types";
+import useAsync from "../useAsync";
 
 /**
  * @description home page
  * @returns if auth: new message form and messages; else only messages
  */
-const Home = () => {
+const HomePage = () => {
   /** auth from zustand store */
   const auth = useStore((state) => state.auth);
 
@@ -33,7 +33,7 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
 
 type TGetMessages = {
   token: string;
