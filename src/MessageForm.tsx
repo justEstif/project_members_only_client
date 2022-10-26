@@ -14,7 +14,13 @@ const MessageForm = ({ execute }: TMessageForm) => {
   type FormData = {
     text: string;
   };
-  const { register, handleSubmit, reset } = useForm<FormData>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { errors },
+  } = useForm<FormData>();
   const token = useStore((state) => state.auth?.token);
 
   /**
@@ -37,8 +43,12 @@ const MessageForm = ({ execute }: TMessageForm) => {
       execute(); // get messages
       reset(); // reset form
     } else {
-      // TODO: handle error
-      (await response.json().catch((error) => error)) as TAuth400;
+      /** returns string, if there is an error */
+      const error = (await response.json().catch((error) => error)) as string;
+      setError("text", {
+        type: "custom",
+        message: error,
+      });
     }
   };
 
@@ -68,6 +78,10 @@ const MessageForm = ({ execute }: TMessageForm) => {
             placeholder="Enter your message"
             {...register("text", { required: true })}
           />
+
+          {errors.text && errors.text.type === "custom" && (
+            <span role="alert">{errors.text.message}</span>
+          )}
         </div>
       </label>
     </form>
