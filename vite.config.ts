@@ -7,8 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        // target: `http://localhost:4200`,
-        target: "https://members-only-85me.onrender.com",
+        target: `http://localhost:4200`,
+        // target: "https://members-only-85me.onrender.com",
         changeOrigin: true,
       },
     },

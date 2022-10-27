@@ -1,7 +1,7 @@
 import { FieldValues, useForm } from "react-hook-form";
 import tw from "tailwind-styled-components";
 import useStore from "../../store";
-import { TAuth200, TAuth400 } from "../../types";
+import { TAuth200 } from "../../types";
 
 type TForm = {
   name: string;
@@ -50,9 +50,7 @@ const Form = () => {
       const auth = (await response.json()) as TAuth200;
       login(auth);
     } else {
-      const { error } = (await response
-        .json()
-        .catch((error) => error)) as TAuth400;
+      const error = (await response.json().catch((error) => error)) as string;
       setError("email", {
         type: "custom",
         message: error,
