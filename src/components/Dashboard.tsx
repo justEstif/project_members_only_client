@@ -24,33 +24,30 @@ const Dashboard = () => {
     location.reload(); // refresh page on logout
   };
   return (
-    <div className="flex flex-col gap-5 justify-center items-center">
-      <h1 className="text-4xl md:text-6xl">Talaria</h1>
-      <nav>
-        <ul className="flex gap-8 text-2xl">
-          <li>
-            <Link to="/">Home</Link>
-          </li>
+    <nav className="grid px-10 grid-rows-navbar">
+      <img src="/logo.png" className="w-24" />
+      <ul className="flex flex-col gap-4 text-lg">
+        <li>
+          <Link to="/">Home</Link>
+        </li>
 
-          <li>
-            {auth ? (
-              <Link to="/account">Account</Link>
-            ) : (
-              <Link to="/login">Login</Link>
-            )}
-          </li>
+        <li>
+          {auth ? (
+            <Link to="/account">Account</Link>
+          ) : (
+            <Link to="/login">Login</Link>
+          )}
+        </li>
 
-          <li>
-            {auth ? (
-              <button onClick={handleLogout}>Logout</button>
-            ) : (
-              <Link to="/register">Register</Link>
-            )}
-          </li>
-        </ul>
-      </nav>
-      {/* TODO: Add night mode switch */}
-    </div>
+        <li>
+          {auth ? (
+            <button onClick={handleLogout}>Logout</button>
+          ) : (
+            <Link to="/register">Register</Link>
+          )}
+        </li>
+      </ul>
+    </nav>
   );
 };
 
