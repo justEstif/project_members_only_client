@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {
       gridTemplateColumns: {
-        page: "250px minmax(400px, 1fr)",
+        page: "350px minmax(400px, 1fr)",
+        form: "minmax(400px, 1fr) 150px",
       },
       gridTemplateRows: {
         page: "150px 1fr",

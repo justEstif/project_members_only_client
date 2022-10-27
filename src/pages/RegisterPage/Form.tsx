@@ -1,14 +1,8 @@
 import { FieldValues, useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import tw from "tailwind-styled-components";
 import useStore from "../../store";
 import { TAuth200 } from "../../types";
-import {
-  SInput,
-  SFormTitle,
-  SFieldset,
-  SLabel,
-  SLabelDiv,
-  SErrorMsg,
-} from "../../components/SComponents";
 
 type TForm = {
   name: string;
@@ -17,6 +11,16 @@ type TForm = {
   password: string; // min length 6
   passwordConfirmation: string;
 };
+
+const SLabel = tw.label`grid grid-rows-2 gap-2`;
+const SFieldset = tw.fieldset`grid grid-rows-5 gap-6 mb-8`;
+const SLabelDiv = tw.div`flex justify-between`;
+const SErrorMsg = tw.p`text-red-500`;
+const SFormTitle = tw.h1`mb-8 text-3xl`;
+const SInput = tw.input`
+${(p: { $error: boolean }) => (p.$error ? "border-red-500" : "border-black")}
+${(p: { $error: boolean }) => (p.$error ? "focus:border-0" : "focus:border-2")}
+px-2 py-1 w-full bg-gray-300 rounded-md border-2`;
 
 const Form = () => {
   const login = useStore((state) => state.login);
@@ -167,11 +171,11 @@ const Form = () => {
 
       <div className="grid grid-rows-2 gap-4">
         <button className="py-2 px-5 bg-green-400" type="submit">
-          Register
+          <Link to="/register">Register</Link>
         </button>
-        <div className="flex justify-end w-">
+        <div className="flex justify-end">
           <button className="border-0 border-b-2 border-black">
-            Already registered? Login
+            <Link to="/login">Already registered? Login</Link>
           </button>
         </div>
       </div>
