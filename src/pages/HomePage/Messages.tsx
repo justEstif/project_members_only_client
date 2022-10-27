@@ -29,7 +29,6 @@ const DeleteIcon = () => (
 const SMessage = tw.div`
   border-b-2
   border-gray-200
-  font-body
   grid
   grid-cols-2
   py-2
@@ -135,7 +134,7 @@ const Messages = ({ value: messages, error, status, execute }: TMessages) => {
                   </button>
                 ) : null}
 
-                <div className="text-lg text-blue-700 break-words font-heading">
+                <div className="text-lg text-blue-700 break-words">
                   {item.text}
                 </div>
               </div>

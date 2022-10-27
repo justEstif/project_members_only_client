@@ -46,7 +46,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="container my-10 mx-auto max-w-sm font-heading">
+    <div className="container my-10 mx-auto max-w-sm">
       <form
         className="grid grid-cols-1 gap-6"
         onSubmit={handleSubmit(onSubmit)}

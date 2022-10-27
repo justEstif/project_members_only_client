@@ -14,7 +14,6 @@ const SInput = tw.input`
   border-gray-200
   focus:outline-none
   focus:border-black
-  font-body
 `;
 
 export default SInput;

@@ -20,7 +20,7 @@ const HomePage = () => {
   >(getMessages, { token: auth?.token || "" });
 
   return (
-    <div className="container my-10 mx-auto font-heading">
+    <div className="container my-10 mx-auto">
       {auth ? (
         <MessageForm execute={execute} />
       ) : (

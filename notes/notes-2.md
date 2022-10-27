@@ -19,3 +19,11 @@
 5. [ ] Add message edit and delete for user
 
 6. [ ] Add update user
+
+Logo credit:
+
+```html
+<a href="https://www.flaticon.com/free-icons/crow" title="crow icons"
+  >Crow icons created by Freepik - Flaticon</a
+>
+```

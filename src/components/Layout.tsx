@@ -18,10 +18,10 @@ const SPageLayout = tw.main`
  */
 const Layout = () => {
   return (
-    <SPageLayout>
-      <Dashboard />
+    <>
+      {/* <Dashboard /> */}
       <Outlet />
-    </SPageLayout>
+    </>
   );
 };
 

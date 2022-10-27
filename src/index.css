@@ -1,12 +1,3 @@
-/* NOTE: Greek like font */
-@import url("https://fonts.googleapis.com/css2?family=Smythe&display=swap");
-
-/* NOTE: Heading */
-@import url("https://fonts.googleapis.com/css2?family=Expletus+Sans:wght@400;600&display=swap");
-
-/* NOTE: Body */
-@import url('https://fonts.googleapis.com/css2?family=Hind:wght@300;400&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
