@@ -1,47 +1,176 @@
+import { FieldValues, useForm } from "react-hook-form";
 import tw from "tailwind-styled-components";
+import useStore from "../../store";
+import { TAuth200, TAuth400 } from "../../types";
 
-const SInput = tw.input`px-2 py-1 w-full bg-gray-300 rounded-md border-2 border-black focus:border-0`;
+type TForm = {
+  name: string;
+  userName: string;
+  email: string;
+  password: string; // min length 6
+  passwordConfirmation: string;
+};
+
+type TInput = {
+  $error: boolean;
+};
+
+const SInput = tw.input<TInput>`
+${(p: TInput) => (p.$error ? "border-red-500" : "border-black")}
+${(p: TInput) => (p.$error ? "focus:border-0" : "focus:border-2")}
+px-2 py-1 w-full bg-gray-300 rounded-md border-2`;
 const SLabel = tw.label`grid grid-rows-2 gap-2`;
 const SFieldset = tw.fieldset`grid grid-rows-4 gap-6 mb-8`;
 const SLabelDiv = tw.div`flex justify-between`;
 const SErrorMsg = tw.p`text-red-500`;
+const SFormTitle = tw.h1`mb-8 text-3xl`;
 
 const Form = () => {
+  const login = useStore((state) => state.login);
+
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    setError,
+    formState: { errors },
+  } = useForm<TForm>();
+
+  const onSubmit = async (values: FieldValues) => {
+    const response = await fetch("/api/register", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (response.ok) {
+      const auth = (await response.json()) as TAuth200;
+      login(auth);
+    } else {
+      const { error } = (await response
+        .json()
+        .catch((error) => error)) as TAuth400;
+      setError("email", {
+        type: "custom",
+        message: error,
+      });
+    }
+  };
+
   return (
-    <form>
-      <h1 className="mb-8 text-3xl">Create an account</h1>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <SFormTitle>Create an account</SFormTitle>
 
       <SFieldset>
         <SLabel>
           <SLabelDiv>
             <p>Name</p>
-            <SErrorMsg>Error message</SErrorMsg>
+            {errors.name && errors.name.type === "required" && (
+              <SErrorMsg role="alert">This field is required</SErrorMsg>
+            )}
+
+            {errors.name && errors.name.type === "pattern" && (
+              <SErrorMsg role="alert">Invalid input</SErrorMsg>
+            )}
           </SLabelDiv>
-          <SInput />
+          <SInput
+            type="text"
+            $error={errors.name ? true : false}
+            {...register("name", { required: true, pattern: /^[A-Za-z]+$/i })}
+          />
+        </SLabel>
+
+        <SLabel>
+          <SLabelDiv>
+            <p>Username</p>
+            <SErrorMsg>
+              {errors.userName && errors.userName.type === "required" && (
+                <SErrorMsg role="alert">This field is required</SErrorMsg>
+              )}
+            </SErrorMsg>
+          </SLabelDiv>
+          <SInput
+            type="text"
+            $error={errors.userName ? true : false}
+            {...register("userName", { required: true })}
+          />
         </SLabel>
 
         <SLabel>
           <SLabelDiv>
             <p>Email</p>
-            <SErrorMsg>Error message</SErrorMsg>
+
+            {errors.email && errors.email.type === "required" && (
+              <SErrorMsg role="alert">This field is required</SErrorMsg>
+            )}
+
+            {errors.email && errors.email.type === "pattern" && (
+              <SErrorMsg role="alert">Invalid email</SErrorMsg>
+            )}
+
+            {errors.email && errors.email.type === "custom" && (
+              <SErrorMsg role="alert">{errors.email.message}</SErrorMsg>
+            )}
           </SLabelDiv>
-          <SInput />
+          <SInput
+            type="email"
+            $error={errors.email ? true : false}
+            {...register("email", {
+              required: true,
+              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            })}
+          />
         </SLabel>
 
         <SLabel>
           <SLabelDiv>
             <p>Password</p>
-            <SErrorMsg>Error message</SErrorMsg>
+
+            {errors.password && errors.password.type === "required" && (
+              <SErrorMsg role="alert">This field is required</SErrorMsg>
+            )}
+
+            {errors.password && errors.password.type === "minLength" && (
+              <SErrorMsg role="alert">
+                Password must be at least 6 characters.
+              </SErrorMsg>
+            )}
           </SLabelDiv>
-          <SInput />
+          <SInput
+            type="password"
+            $error={errors.password ? true : false}
+            {...register("password", {
+              required: true,
+              minLength: 6,
+            })}
+          />
         </SLabel>
 
         <SLabel>
           <SLabelDiv>
             <p>Confirm Password</p>
-            <SErrorMsg>Error message</SErrorMsg>
+
+            {errors.passwordConfirmation &&
+              errors.passwordConfirmation.type === "required" && (
+                <SErrorMsg role="alert">This field is required</SErrorMsg>
+              )}
+
+            {errors.passwordConfirmation &&
+              errors.passwordConfirmation.type === "validate" && (
+                <SErrorMsg role="alert">Passwords {"don't"} match.</SErrorMsg>
+              )}
           </SLabelDiv>
-          <SInput />
+          <SInput
+            type="password"
+            $error={errors.passwordConfirmation ? true : false}
+            {...register("passwordConfirmation", {
+              required: true,
+              validate: (value) => value === getValues("password"),
+            })}
+          />
         </SLabel>
       </SFieldset>
 
