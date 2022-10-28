@@ -8,11 +8,13 @@ import {
   SLabel,
   SLabelDiv,
   SErrorMsg,
+  SForm as SFormGlobal,
+  SSubmitBtn,
 } from "../../components/SComponents";
 import useStore from "../../store";
 import { TAuth200 } from "../../types";
 
-const SFieldset = tw(SFieldsetGlobal)`grid-rows-2`;
+const SForm = tw(SFormGlobal)`grid-rows-3`;
 
 type TForm = {
   email: string;
@@ -51,69 +53,58 @@ const Form = () => {
     }
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <SForm onSubmit={handleSubmit(onSubmit)}>
       <SFormTitle>Login to account</SFormTitle>
-      <SFieldset>
-        <SLabel>
-          <SLabelDiv>
-            <p>Email</p>
+      <SLabel>
+        <SLabelDiv>
+          <p>Email</p>
 
-            {errors.email && errors.email.type === "required" && (
-              <SErrorMsg role="alert">This field is required</SErrorMsg>
-            )}
+          {errors.email && errors.email.type === "required" && (
+            <SErrorMsg role="alert">This field is required</SErrorMsg>
+          )}
 
-            {errors.email && errors.email.type === "pattern" && (
-              <SErrorMsg role="alert">Invalid email</SErrorMsg>
-            )}
-          </SLabelDiv>
-          <SInput
-            type="email"
-            $error={errors.email ? true : false}
-            {...register("email", {
-              required: true,
-              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            })}
-          />
-        </SLabel>
+          {errors.email && errors.email.type === "pattern" && (
+            <SErrorMsg role="alert">Invalid email</SErrorMsg>
+          )}
+        </SLabelDiv>
+        <SInput
+          type="email"
+          $error={errors.email ? true : false}
+          {...register("email", {
+            required: true,
+            pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+          })}
+        />
+      </SLabel>
 
-        <SLabel>
-          <SLabelDiv>
-            <p>Password</p>
+      <SLabel>
+        <SLabelDiv>
+          <p>Password</p>
 
-            {errors.password && errors.password.type === "required" && (
-              <SErrorMsg role="alert">This field is required</SErrorMsg>
-            )}
+          {errors.password && errors.password.type === "required" && (
+            <SErrorMsg role="alert">This field is required</SErrorMsg>
+          )}
 
-            {errors.password && errors.password.type === "minLength" && (
-              <SErrorMsg role="alert">
-                Password must be at least 6 characters.
-              </SErrorMsg>
-            )}
-            {errors.password && errors.password.type === "custom" && (
-              <SErrorMsg role="alert">Incorrect email or password</SErrorMsg>
-            )}
-          </SLabelDiv>
-          <SInput
-            type="password"
-            $error={errors.password ? true : false}
-            {...register("password", {
-              required: true,
-              minLength: 6,
-            })}
-          />
-        </SLabel>
-      </SFieldset>
-      <div className="grid grid-rows-2 gap-4">
-        <button className="py-2 px-5 bg-green-400" type="submit">
-          <Link to="/login">Login</Link>
-        </button>
-        <div className="flex justify-end">
-          <button className="border-0 border-b-2 border-black">
-            <Link to="/register">Don{"'"}t have an account? Register</Link>
-          </button>
-        </div>
-      </div>
-    </form>
+          {errors.password && errors.password.type === "minLength" && (
+            <SErrorMsg role="alert">
+              Password must be at least 6 characters.
+            </SErrorMsg>
+          )}
+          {errors.password && errors.password.type === "custom" && (
+            <SErrorMsg role="alert">Incorrect email or password</SErrorMsg>
+          )}
+        </SLabelDiv>
+        <SInput
+          type="password"
+          $error={errors.password ? true : false}
+          {...register("password", {
+            required: true,
+            minLength: 6,
+          })}
+        />
+      </SLabel>
+      <SSubmitBtn type="submit">Login</SSubmitBtn>
+    </SForm>
   );
 };
 
