@@ -4,14 +4,15 @@ module.exports = {
   theme: {
     extend: {
       gridTemplateColumns: {
-        page: "250px minmax(400px, 1fr)",
+        layout: "250px minmax(400px, 1fr)",
+        page: "minmax(400px, 1fr) 350px",
       },
       gridTemplateRows: {
-        page: "150px 1fr",
+        layout: "150px 1fr",
         navbar: "150px 1fr",
       },
     },
     fontFamily: {},
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };
