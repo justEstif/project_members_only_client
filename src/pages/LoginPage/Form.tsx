@@ -1,18 +1,18 @@
 import { FieldValues, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import tw from "tailwind-styled-components";
+import {
+  SInput,
+  SFormTitle,
+  SFieldset as SFieldsetGlobal,
+  SLabel,
+  SLabelDiv,
+  SErrorMsg,
+} from "../../components/SComponents";
 import useStore from "../../store";
 import { TAuth200 } from "../../types";
 
-const SInput = tw.input`
-${(p: { $error: boolean }) => (p.$error ? "border-red-500" : "border-black")}
-${(p: { $error: boolean }) => (p.$error ? "focus:border-0" : "focus:border-2")}
-px-2 py-1 w-full bg-gray-300 rounded-md border-2`;
-const SLabel = tw.label`grid grid-rows-2 gap-2`;
-const SFieldset = tw.fieldset`w-1/2 grid grid-rows-2 gap-6 mb-8`;
-const SLabelDiv = tw.div`flex justify-between`;
-const SErrorMsg = tw.p`text-red-500`;
-const SFormTitle = tw.h1`mb-8 text-3xl`;
+const SFieldset = tw(SFieldsetGlobal)`grid-rows-2`;
 
 type TForm = {
   email: string;
@@ -25,7 +25,6 @@ const Form = () => {
   const {
     register,
     handleSubmit,
-    getValues,
     setError,
     formState: { errors },
   } = useForm<TForm>();
