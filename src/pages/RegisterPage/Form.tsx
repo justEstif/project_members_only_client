@@ -7,6 +7,8 @@ import {
   SLabel,
   SLabelDiv,
   SErrorMsg,
+  SForm,
+  SSubmitBtn,
 } from "../../components/SComponents";
 import useStore from "../../store";
 import { TAuth200 } from "../../types";
@@ -53,130 +55,119 @@ const Form = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <SForm onSubmit={handleSubmit(onSubmit)}>
       <SFormTitle>Create an account</SFormTitle>
 
-      <SFieldset>
-        <SLabel>
-          <SLabelDiv>
-            <p>Name</p>
-            {errors.name && errors.name.type === "required" && (
+      <SLabel>
+        <SLabelDiv>
+          <p>Name</p>
+          {errors.name && errors.name.type === "required" && (
+            <SErrorMsg role="alert">This field is required</SErrorMsg>
+          )}
+
+          {errors.name && errors.name.type === "pattern" && (
+            <SErrorMsg role="alert">Invalid input</SErrorMsg>
+          )}
+        </SLabelDiv>
+        <SInput
+          type="text"
+          $error={errors.name ? true : false}
+          {...register("name", { required: true, pattern: /^[A-Za-z]+$/i })}
+        />
+      </SLabel>
+
+      <SLabel>
+        <SLabelDiv>
+          <p>Username</p>
+          <SErrorMsg>
+            {errors.userName && errors.userName.type === "required" && (
               <SErrorMsg role="alert">This field is required</SErrorMsg>
             )}
+          </SErrorMsg>
+        </SLabelDiv>
+        <SInput
+          type="text"
+          $error={errors.userName ? true : false}
+          {...register("userName", { required: true })}
+        />
+      </SLabel>
 
-            {errors.name && errors.name.type === "pattern" && (
-              <SErrorMsg role="alert">Invalid input</SErrorMsg>
-            )}
-          </SLabelDiv>
-          <SInput
-            type="text"
-            $error={errors.name ? true : false}
-            {...register("name", { required: true, pattern: /^[A-Za-z]+$/i })}
-          />
-        </SLabel>
+      <SLabel>
+        <SLabelDiv>
+          <p>Email</p>
 
-        <SLabel>
-          <SLabelDiv>
-            <p>Username</p>
-            <SErrorMsg>
-              {errors.userName && errors.userName.type === "required" && (
-                <SErrorMsg role="alert">This field is required</SErrorMsg>
-              )}
+          {errors.email && errors.email.type === "required" && (
+            <SErrorMsg role="alert">This field is required</SErrorMsg>
+          )}
+
+          {errors.email && errors.email.type === "pattern" && (
+            <SErrorMsg role="alert">Invalid email</SErrorMsg>
+          )}
+
+          {errors.email && errors.email.type === "custom" && (
+            <SErrorMsg role="alert">{errors.email.message}</SErrorMsg>
+          )}
+        </SLabelDiv>
+        <SInput
+          type="email"
+          $error={errors.email ? true : false}
+          {...register("email", {
+            required: true,
+            pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+          })}
+        />
+      </SLabel>
+
+      <SLabel>
+        <SLabelDiv>
+          <p>Password</p>
+
+          {errors.password && errors.password.type === "required" && (
+            <SErrorMsg role="alert">This field is required</SErrorMsg>
+          )}
+
+          {errors.password && errors.password.type === "minLength" && (
+            <SErrorMsg role="alert">
+              Password must be at least 6 characters.
             </SErrorMsg>
-          </SLabelDiv>
-          <SInput
-            type="text"
-            $error={errors.userName ? true : false}
-            {...register("userName", { required: true })}
-          />
-        </SLabel>
+          )}
+        </SLabelDiv>
+        <SInput
+          type="password"
+          $error={errors.password ? true : false}
+          {...register("password", {
+            required: true,
+            minLength: 6,
+          })}
+        />
+      </SLabel>
 
-        <SLabel>
-          <SLabelDiv>
-            <p>Email</p>
+      <SLabel>
+        <SLabelDiv>
+          <p>Confirm Password</p>
 
-            {errors.email && errors.email.type === "required" && (
+          {errors.passwordConfirmation &&
+            errors.passwordConfirmation.type === "required" && (
               <SErrorMsg role="alert">This field is required</SErrorMsg>
             )}
 
-            {errors.email && errors.email.type === "pattern" && (
-              <SErrorMsg role="alert">Invalid email</SErrorMsg>
+          {errors.passwordConfirmation &&
+            errors.passwordConfirmation.type === "validate" && (
+              <SErrorMsg role="alert">Passwords {"don't"} match.</SErrorMsg>
             )}
+        </SLabelDiv>
+        <SInput
+          type="password"
+          $error={errors.passwordConfirmation ? true : false}
+          {...register("passwordConfirmation", {
+            required: true,
+            validate: (value) => value === getValues("password"),
+          })}
+        />
+      </SLabel>
 
-            {errors.email && errors.email.type === "custom" && (
-              <SErrorMsg role="alert">{errors.email.message}</SErrorMsg>
-            )}
-          </SLabelDiv>
-          <SInput
-            type="email"
-            $error={errors.email ? true : false}
-            {...register("email", {
-              required: true,
-              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            })}
-          />
-        </SLabel>
-
-        <SLabel>
-          <SLabelDiv>
-            <p>Password</p>
-
-            {errors.password && errors.password.type === "required" && (
-              <SErrorMsg role="alert">This field is required</SErrorMsg>
-            )}
-
-            {errors.password && errors.password.type === "minLength" && (
-              <SErrorMsg role="alert">
-                Password must be at least 6 characters.
-              </SErrorMsg>
-            )}
-          </SLabelDiv>
-          <SInput
-            type="password"
-            $error={errors.password ? true : false}
-            {...register("password", {
-              required: true,
-              minLength: 6,
-            })}
-          />
-        </SLabel>
-
-        <SLabel>
-          <SLabelDiv>
-            <p>Confirm Password</p>
-
-            {errors.passwordConfirmation &&
-              errors.passwordConfirmation.type === "required" && (
-                <SErrorMsg role="alert">This field is required</SErrorMsg>
-              )}
-
-            {errors.passwordConfirmation &&
-              errors.passwordConfirmation.type === "validate" && (
-                <SErrorMsg role="alert">Passwords {"don't"} match.</SErrorMsg>
-              )}
-          </SLabelDiv>
-          <SInput
-            type="password"
-            $error={errors.passwordConfirmation ? true : false}
-            {...register("passwordConfirmation", {
-              required: true,
-              validate: (value) => value === getValues("password"),
-            })}
-          />
-        </SLabel>
-      </SFieldset>
-
-      <div className="grid grid-rows-2 gap-4">
-        <button className="py-2 px-5 bg-green-400" type="submit">
-          <Link to="/register">Register</Link>
-        </button>
-        <div className="flex justify-end">
-          <button className="border-0 border-b-2 border-black">
-            <Link to="/login">Already registered? Login</Link>
-          </button>
-        </div>
-      </div>
-    </form>
+      <SSubmitBtn type="submit">Register</SSubmitBtn>
+    </SForm>
   );
 };
 
