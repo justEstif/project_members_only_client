@@ -8,3 +8,7 @@
 ## Design:
 
 - [Inspiration](https://themes.gohugo.io/themes/hugo-ficurinia/)
+
+## Deploy:
+
+- [Live link](https://members-only-client.onrender.com/)
