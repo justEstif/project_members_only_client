@@ -32,7 +32,8 @@ const Form = () => {
   } = useForm<TForm>();
 
   const onSubmit = async (values: FieldValues) => {
-    const response = await fetch("/api/login", {
+
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login`, {
       method: "POST",
       headers: {
         Accept: "application/json, text/plain, */*",

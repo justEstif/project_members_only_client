@@ -28,15 +28,18 @@ const MessageForm = ({ execute }: TMessageForm) => {
    * @fires execute: function will get messages again on submit
    */
   const onSubmit = async (values: FieldValues) => {
-    const response = await fetch("/api/message", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // include user's jwt token
-      },
-      body: JSON.stringify(values), // add the form values to post req
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/message`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // include user's jwt token
+        },
+        body: JSON.stringify(values), // add the form values to post req
+      }
+    );
 
     if (response.ok) {
       (await response.json()) as { message: TMessage };

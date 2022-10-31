@@ -28,4 +28,4 @@ Logo credit:
 >
 ```
 
-<https://members-only-client-c7a63.web.app>
+https://members-only-client-c7a63.web.app

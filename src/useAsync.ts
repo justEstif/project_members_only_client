@@ -24,8 +24,6 @@ const useAsync = <T, F, E = "string">(
       setValue(response);
       setStatus("success");
     } catch (error) {
-      console.log(error);
-      console.log(JSON.stringify(error));
       setError(error as any);
       setStatus("error");
     }

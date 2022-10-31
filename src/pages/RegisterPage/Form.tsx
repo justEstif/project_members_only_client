@@ -31,14 +31,17 @@ const Form = () => {
   } = useForm<TForm>();
 
   const onSubmit = async (values: FieldValues) => {
-    const response = await fetch("/api/register", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/register`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }
+    );
 
     if (response.ok) {
       const auth = (await response.json()) as TAuth200;

@@ -43,12 +43,15 @@ const Messages = ({ value: messages, error, status, execute }: TMessages) => {
   const auth = useStore((state) => state.auth);
 
   const handleMessageDelete = async (id: string) => {
-    const response = await fetch(`/api/message/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${auth?.token}`,
-      },
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/message/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${auth?.token}`,
+        },
+      }
+    );
 
     if (response.ok) {
       execute();

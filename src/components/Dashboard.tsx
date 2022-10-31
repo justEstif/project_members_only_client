@@ -13,7 +13,7 @@ const Dashboard = () => {
    * @description function for logging out user invalidates jwt and create cookies
    */
   const handleLogout = async () => {
-    await fetch("/api/logout", {
+    await fetch(`${import.meta.env.VITE_BACKEND_URL}/logout`, {
       method: "GET",
       headers: new Headers({
         Authorization: `Bearer ${auth?.token}`,

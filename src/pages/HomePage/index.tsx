@@ -44,7 +44,7 @@ type TGetMessages = {
  * @returns the api response if successful; else empty object
  */
 const getMessages = async ({ token }: TGetMessages) => {
-  const response = await fetch("/api/message", {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/message`, {
     method: "GET",
     headers: new Headers({
       Authorization: `Bearer ${token}`,

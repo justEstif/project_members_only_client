@@ -24,15 +24,18 @@ const AccountPage = () => {
    * @description update the user on form submit
    */
   const onSubmit = async (values: FieldValues) => {
-    const response = await fetch(`/api/user/${auth ? auth.user.id : ""}`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${auth ? auth.token : ""}`,
-      },
-      body: JSON.stringify(values),
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/user/${auth ? auth.user.id : ""}`,
+      {
+        method: "PUT",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth ? auth.token : ""}`,
+        },
+        body: JSON.stringify(values),
+      }
+    );
 
     if (response.ok) {
       const user = (await response.json()) as TUser;
