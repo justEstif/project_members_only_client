@@ -7,7 +7,6 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        // target: "https://members-only-85me.onrender.com/",
         target: "https://project-members-only-production.up.railway.app/",
         changeOrigin: true,
       },
