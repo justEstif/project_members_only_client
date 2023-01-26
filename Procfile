@@ -1,1 +1,1 @@
-root: dist
+web: npm run start
